@@ -6,7 +6,7 @@ import os
 df_day = pd.read_csv(os.path.join(os.path.dirname(__file__), 'main_data.csv'))
 df_day['dteday'] = pd.to_datetime(df_day['dteday'])
 
-df_hour = pd.read_csv(os.path.join(os.path.dirname(__file__), '../data/hour.csv'))
+df_hour = pd.read_csv(os.path.join(os.path.dirname(__file__), 'hour.csv'))
 df_hour['dteday'] = pd.to_datetime(df_hour['dteday'])
 
 kolom = ['season', 'yr', 'mnth', 'holiday', 'weekday', 'workingday', 'weathersit']
