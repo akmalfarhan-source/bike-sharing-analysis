@@ -25,7 +25,7 @@ selected_season = st.sidebar.multiselect(
 df_filtered = df_day[df_day['season_label'].isin(selected_season)]
 
 st.title('🚴 Dashboard Bike Sharing')
-st.markdown('Analisis peminjaman sepeda tahun 2011–2012')
+st.markdown('Analisis peminjaman sepeda tahun 2011-2012')
 
 col1, col2, col3 = st.columns(3)
 col1.metric('Total Peminjaman', f"{df_filtered['cnt'].sum():,}")
@@ -34,7 +34,7 @@ col3.metric('Peminjaman Tertinggi', f"{df_filtered['cnt'].max():,}")
 
 st.markdown('---')
 
-st.subheader('Pertanyaan 1: Pola Peminjaman per Jam')
+st.subheader('Pola Peminjaman per Jam')
 ratajam = df_hour.groupby(['hr', 'workingday'], observed=True)['cnt'].mean().reset_index()
 ratajam.columns = ['hr', 'workingday', 'avg_cnt']
 
@@ -52,7 +52,7 @@ st.pyplot(fig1)
 
 st.markdown('---')
 
-st.subheader('Pertanyaan 2: Peminjaman per Musim')
+st.subheader('Peminjaman per Musim')
 ratamusim = df_filtered.groupby('season_label', observed=True)['cnt'].mean().reset_index()
 ratamusim.columns = ['season', 'avg_cnt']
 
