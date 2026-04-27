@@ -3,18 +3,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-df_day = pd.read_csv(os.path.join(os.path.dirname(__file__), 'main_data.csv'))
-df_day['dteday'] = pd.to_datetime(df_day['dteday'])
-
-df_hour = pd.read_csv(os.path.join(os.path.dirname(__file__), 'hour.csv'))
+df_hour = pd.read_csv(os.path.join(os.path.dirname(__file__), 'main_data.csv'))
 df_hour['dteday'] = pd.to_datetime(df_hour['dteday'])
 
 kolom = ['season', 'yr', 'mnth', 'holiday', 'weekday', 'workingday', 'weathersit']
 for col in kolom:
-    df_day[col] = df_day[col].astype('category')
     df_hour[col] = df_hour[col].astype('category')
 
-df_day['season_label'] = df_day['season'].map({1: 'Spring', 2: 'Summer', 3: 'Fall', 4: 'Winter'})
+df_hour['season_label'] = df_hour['season'].map({1: 'Spring', 2: 'Summer', 3: 'Fall', 4: 'Winter'})
 
 st.sidebar.title('Filter Data')
 selected_season = st.sidebar.multiselect(
@@ -22,20 +18,20 @@ selected_season = st.sidebar.multiselect(
     options=['Spring', 'Summer', 'Fall', 'Winter'],
     default=['Spring', 'Summer', 'Fall', 'Winter']
 )
-df_filtered = df_day[df_day['season_label'].isin(selected_season)]
+df_filtered = df_hour[df_hour['season_label'].isin(selected_season)]
 
-st.title('🚴 Dashboard Bike Sharing')
-st.markdown('Analisis peminjaman sepeda tahun 2011–2012')
+st.title('Dashboard Bike Sharing')
+st.markdown('Analisis peminjaman sepeda tahun 2011-2012')
 
 col1, col2, col3 = st.columns(3)
 col1.metric('Total Peminjaman', f"{df_filtered['cnt'].sum():,}")
-col2.metric('Rata-rata Harian', f"{df_filtered['cnt'].mean():.0f}")
+col2.metric('Rata-rata per Jam', f"{df_filtered['cnt'].mean():.0f}")
 col3.metric('Peminjaman Tertinggi', f"{df_filtered['cnt'].max():,}")
 
 st.markdown('---')
 
 st.subheader('Pola Peminjaman per Jam')
-ratajam = df_hour.groupby(['hr', 'workingday'], observed=True)['cnt'].mean().reset_index()
+ratajam = df_filtered.groupby(['hr', 'workingday'], observed=True)['cnt'].mean().reset_index()
 ratajam.columns = ['hr', 'workingday', 'avg_cnt']
 
 fig1, ax1 = plt.subplots(figsize=(10, 4))
@@ -60,7 +56,7 @@ fig2, ax2 = plt.subplots(figsize=(8, 4))
 colors = ['#90CAF9', '#FFB74D', '#A5D6A7', '#EF9A9A']
 bars = ax2.bar(ratamusim['season'], ratamusim['avg_cnt'], color=colors[:len(ratamusim)], edgecolor='white', width=0.5)
 for bar in bars:
-    ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 30,
+    ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 3,
              f'{bar.get_height():.0f}', ha='center', fontsize=10)
 ax2.set_xlabel('Musim')
 ax2.set_ylabel('Rata-rata Peminjaman')
