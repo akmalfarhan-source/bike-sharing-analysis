@@ -1,8 +1,9 @@
 # Dashboard Bike Sharing
 
-## Setup Environment - Shell/Terminal
+## Cara Running Dashboard
+1.Install semua library:
 pip install -r requirements.txt
-
-## Run Streamlit App
+2.Buka terminal: View → Terminal
+3.Jalankan kode berikut:
 cd Dashboard
 streamlit run dashboard.py
